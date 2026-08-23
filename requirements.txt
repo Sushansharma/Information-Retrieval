@@ -1,0 +1,8 @@
+requests
+beautifulsoup4
+nltk
+flask
+scikit-learn
+schedule
+pandas
+pyngrok

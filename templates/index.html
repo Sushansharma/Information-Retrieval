@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HCT Publication Search — Coventry University</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F6F4EE;
+    --ink: #1C1B18;
+    --ink-soft: #5B5850;
+    --navy: #1F3A5F;
+    --navy-deep: #142A45;
+    --teal: #3E6259;
+    --rule: #D9D4C6;
+    --card-bg: #FFFFFF;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  header.masthead {
+    border-bottom: 1px solid var(--rule);
+    padding: 2.5rem 1.5rem 1.75rem;
+    text-align: center;
+  }
+
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 0.6rem;
+  }
+
+  h1 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 600;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    margin: 0 0 0.4rem;
+    color: var(--navy-deep);
+  }
+
+  .subtitle {
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+    max-width: 46ch;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+
+  main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4rem;
+  }
+
+  form.search-form {
+    display: flex;
+    gap: 0.6rem;
+    margin-bottom: 0.75rem;
+  }
+
+  input[type="text"] {
+    flex: 1;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    padding: 0.8rem 1rem;
+    border: 1.5px solid var(--rule);
+    border-radius: 3px;
+    background: var(--card-bg);
+    color: var(--ink);
+  }
+
+  input[type="text"]:focus {
+    outline: none;
+    border-color: var(--navy);
+    box-shadow: 0 0 0 3px rgba(31, 58, 95, 0.12);
+  }
+
+  button {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0.8rem 1.4rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--navy);
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+
+  button:hover { background: var(--navy-deep); }
+  button:focus-visible { outline: 3px solid var(--teal); outline-offset: 2px; }
+
+  .meta-line {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    margin-bottom: 2rem;
+  }
+
+  ol.results {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    counter-reset: result-counter;
+  }
+
+  li.result-card {
+    counter-increment: result-counter;
+    position: relative;
+    background: var(--card-bg);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--teal);
+    border-radius: 2px;
+    padding: 1.1rem 1.3rem 1.1rem 3rem;
+    margin-bottom: 0.9rem;
+    animation: fade-in 0.3s ease backwards;
+  }
+
+  li.result-card::before {
+    content: counter(result-counter);
+    position: absolute;
+    left: 1.1rem;
+    top: 1.15rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+  }
+
+  li.result-card:nth-child(1) { animation-delay: 0.02s; }
+  li.result-card:nth-child(2) { animation-delay: 0.06s; }
+  li.result-card:nth-child(3) { animation-delay: 0.10s; }
+  li.result-card:nth-child(4) { animation-delay: 0.14s; }
+  li.result-card:nth-child(5) { animation-delay: 0.18s; }
+
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .result-title a {
+    font-family: 'Source Serif 4', serif;
+    font-size: 1.12rem;
+    font-weight: 600;
+    color: var(--navy-deep);
+    text-decoration: none;
+    line-height: 1.35;
+  }
+
+  .result-title a:hover,
+  .result-title a:focus-visible { text-decoration: underline; }
+
+  .result-byline {
+    margin-top: 0.35rem;
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+  }
+
+  .result-byline a {
+    color: var(--teal);
+    text-decoration: none;
+  }
+
+  .result-byline a:hover { text-decoration: underline; }
+
+  .score-badge {
+    display: inline-block;
+    margin-top: 0.55rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.03em;
+    color: var(--teal);
+    background: rgba(62, 98, 89, 0.09);
+    padding: 0.15rem 0.5rem;
+    border-radius: 2px;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--ink-soft);
+    border: 1px dashed var(--rule);
+    border-radius: 4px;
+  }
+
+  .empty-state strong { color: var(--ink); }
+
+  @media (prefers-reduced-motion: reduce) {
+    li.result-card { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <img src="{{ url_for('static', filename='coventryimg.png') }}" alt="Coventry University logo" style="max-height: 90px; width: auto; object-fit: contain; margin-bottom: 0.75rem;">
+  <div class="eyebrow">Coventry University · Pure Portal</div>
+  <h1>HCT Publication Search</h1>
+  <p class="subtitle">
+    A focused search engine over research output from the Centre for
+    Healthcare and Community Transformation — ranked by relevance,
+    not just keyword overlap.
+  </p>
+</header>
+
+<main>
+  <form class="search-form" method="get" action="/">
+    <input
+      type="text"
+      name="q"
+      value="{{ query }}"
+      placeholder="e.g. mental wellbeing, physical activity, midwifery…"
+      autofocus
+    >
+    <button type="submit">Search</button>
+  </form>
+
+  {% if query %}
+    <div class="meta-line">
+      {{ result_count }} result{{ 's' if result_count != 1 else '' }} for
+      &ldquo;{{ query }}&rdquo;
+    </div>
+  {% endif %}
+
+  {% if query and result_count == 0 %}
+    <div class="empty-state">
+      <strong>No matching publications found.</strong><br>
+      Try a broader term, or check whether the crawler has been run yet
+      (see README — <code>python crawler.py</code> then
+      <code>python indexer.py</code>).
+    </div>
+  {% elif results %}
+    <ol class="results">
+      {% for r in results %}
+        <li class="result-card">
+          <div class="result-title">
+            <a href="{{ r.pub_link }}" target="_blank" rel="noopener">{{ r.title }}</a>
+          </div>
+          <div class="result-byline">
+            {% if r.profile_link %}
+              <a href="{{ r.profile_link }}" target="_blank" rel="noopener">{{ r.author }}</a>
+            {% else %}
+              {{ r.author }}
+            {% endif %}
+            {% if r.year %} · {{ r.year }}{% endif %}
+          </div>
+          <span class="score-badge">relevance {{ (r.score * 100) | round(1) }}%</span>
+        </li>
+      {% endfor %}
+    </ol>
+  {% endif %}
+</main>
+
+</body>
+</html>
